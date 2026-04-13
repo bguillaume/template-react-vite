@@ -31,6 +31,7 @@ VITE_API_URL=
 ```
 
 Add your environment variables in:
+
 - **Vercel**: Project → Settings → Environment Variables
 - **Cloudflare Pages**: Project Settings → Environment Variables
 
@@ -88,14 +89,14 @@ npx wrangler pages deploy dist --project-name=your-project --branch=main
 
 ## Platform Comparison
 
-| Feature | Vercel | Cloudflare Pages |
-|---------|--------|------------------|
-| Auto-deploy on push | ✅ | ✅ |
-| Preview deployments | ✅ | ✅ |
-| Custom domains | ✅ | ✅ |
-| Free tier | ✅ | ✅ |
-| Edge functions | ✅ | ✅ |
-| Environment variables | Dashboard + CLI | Dashboard + CLI |
+| Feature               | Vercel          | Cloudflare Pages |
+| --------------------- | --------------- | ---------------- |
+| Auto-deploy on push   | ✅              | ✅               |
+| Preview deployments   | ✅              | ✅               |
+| Custom domains        | ✅              | ✅               |
+| Free tier             | ✅              | ✅               |
+| Edge functions        | ✅              | ✅               |
+| Environment variables | Dashboard + CLI | Dashboard + CLI  |
 
 ## Troubleshooting
 
@@ -118,15 +119,14 @@ Ensure your `vercel.json` has rewrites configured:
 
 ```json
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
 
 ### Cloudflare Pages: Worker size limit
 
 Cloudflare Workers have a 1MB limit on code size. If you hit this:
+
 - Use external APIs instead of bundling large libraries
 - Lazy-load heavy components
 
@@ -139,3 +139,40 @@ Cloudflare Workers have a 1MB limit on code size. If you hit this:
 ## License
 
 MIT
+
+## 🚀 Workflow & Best Practices
+
+This template enforces a strict, automated workflow to ensure high code quality and clear history.
+
+### 1. Branch Naming (Git Flow)
+
+You **cannot** commit directly to random branch names.
+Branches must start with one of the following prefixes:
+`feature/`, `bugfix/`, `hotfix/`, `release/`, `chore/`, `feat/`, `fix/`, `docs/`, `refactor/`, `test/`.
+_(Example: `feature/add-login-page`)_
+
+### 2. Commit Convention (Conventional Commits)
+
+We use the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+**Do not run `git commit` directly.**
+Instead, stage your files and run the interactive helper:
+
+```bash
+npm run commit
+```
+
+This will guide you to format your commit message properly (e.g., `feat(auth): handle expired tokens`).
+
+> Note: If you manually write a bad commit message, the `commitlint` hook will reject it.
+
+### 3. Auto-Formatting (lint-staged)
+
+When you commit, a pre-commit hook automatically runs **Prettier** (`lint-staged`) on all modified files. You never have to worry about formatting issues breaking the CI.
+
+### 4. CI & Branch Protection
+
+This template is designed to work with Pull Request-based workflows and GitHub branch protection.
+
+- We recommend configuring GitHub branch protection rules for `main` and `develop` to block direct pushes, require PRs, and require approvals before merging.
+- A basic GitHub Actions CI workflow is included. It automatically runs checks configured in the repository (such as `npm run lint` and `npm run build` if present).
+- If you want automated tests to be required in CI, add a `test` script to your `package.json` and configure branch protection to require that check.
