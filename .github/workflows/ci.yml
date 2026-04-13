@@ -24,7 +24,7 @@ jobs:
             corepack enable
             yarn install --frozen-lockfile
           else
-            npm ci
+            if [ -f package-lock.json ]; then npm ci; else npm install; fi
           fi
       - name: Lint
         run: npm run lint --if-present

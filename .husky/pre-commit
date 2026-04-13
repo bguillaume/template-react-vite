@@ -7,23 +7,26 @@ fi
 # Check branch name
 local_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-case "$local_branch" in
-  main|master|develop)
-    ;;
-  feature/*|bugfix/*|hotfix/*|release/*|chore/*|feat/*|fix/*|docs/*|refactor/*|test/*)
-    branch_suffix="${local_branch#*/}"
-    if ! printf '%s\n' "$branch_suffix" | grep -Eq '^[A-Za-z0-9_-]+$'; then
-      echo "❌ Error: Branch name '$local_branch' contains invalid characters."
-      echo "   Use only letters, numbers, hyphens, and underscores after the slash."
+# Skip branch-name enforcement during detached HEAD workflows
+if [ "$local_branch" != "HEAD" ]; then
+  case "$local_branch" in
+    main|master|develop)
+      ;;
+    feature/*|bugfix/*|hotfix/*|release/*|chore/*|feat/*|fix/*|docs/*|refactor/*|test/*)
+      branch_suffix="${local_branch#*/}"
+      if ! printf '%s\n' "$branch_suffix" | grep -Eq '^[A-Za-z0-9_-]+$'; then
+        echo "❌ Error: Branch name '$local_branch' contains invalid characters."
+        echo "   Use only letters, numbers, hyphens, and underscores after the slash."
+        exit 1
+      fi
+      ;;
+    *)
+      echo "❌ Error: Branch name '$local_branch' does not follow Git Flow conventions."
+      echo "   Must start with: feature/, bugfix/, hotfix/, release/, chore/, feat/, fix/, docs/, refactor/, test/"
       exit 1
-    fi
-    ;;
-  *)
-    echo "❌ Error: Branch name '$local_branch' does not follow Git Flow conventions."
-    echo "   Must start with: feature/, bugfix/, hotfix/, release/, chore/, feat/, fix/, docs/, refactor/, test/"
-    exit 1
-    ;;
-esac
+      ;;
+  esac
+fi
 
 # Run lint-staged and fail the commit if it cannot be executed
 if ! npx --no -- lint-staged; then

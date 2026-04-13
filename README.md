@@ -163,7 +163,7 @@ This will guide you to format your commit message properly (e.g., `feat(auth): h
 When you commit, a pre-commit hook automatically runs **Prettier** (`lint-staged`) on all modified files. You never have to worry about formatting issues breaking the CI.
 
 ### 4. CI & Branch Protection
-Direct pushes to `main` and `develop` are **blocked**.
-- You must open a Pull Request.
-- A GitHub Actions CI workflow will automatically run (`npm run lint`, `npm run build`, `npm run test`).
-- The PR can only be merged if the CI checks pass and there is at least 1 approval.
+This template is designed to work with Pull Request-based workflows and GitHub branch protection.
+- We recommend configuring GitHub branch protection rules for `main` and `develop` to block direct pushes, require PRs, and require approvals before merging.
+- A basic GitHub Actions CI workflow is included. It automatically runs checks configured in the repository (such as `npm run lint` and `npm run build` if present).
+- If you want automated tests to be required in CI, add a `test` script to your `package.json` and configure branch protection to require that check.
