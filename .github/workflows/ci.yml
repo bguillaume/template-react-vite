@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
 
 jobs:
   build-and-lint:
@@ -19,7 +19,7 @@ jobs:
         run: |
           if [ -f pnpm-lock.yaml ]; then
             npm install -g pnpm
-            pnpm install
+            pnpm install --frozen-lockfile
           elif [ -f yarn.lock ]; then
             corepack enable
             yarn install --frozen-lockfile
