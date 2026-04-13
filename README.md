@@ -139,3 +139,31 @@ Cloudflare Workers have a 1MB limit on code size. If you hit this:
 ## License
 
 MIT
+## 🚀 Workflow & Best Practices
+
+This template enforces a strict, automated workflow to ensure high code quality and clear history.
+
+### 1. Branch Naming (Git Flow)
+You **cannot** commit directly to random branch names.
+Branches must start with one of the following prefixes:
+`feature/`, `bugfix/`, `hotfix/`, `release/`, `chore/`, `feat/`, `fix/`, `docs/`, `refactor/`, `test/`.
+*(Example: `feature/add-login-page`)*
+
+### 2. Commit Convention (Conventional Commits)
+We use the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+**Do not run `git commit` directly.**
+Instead, stage your files and run the interactive helper:
+```bash
+npm run commit
+```
+This will guide you to format your commit message properly (e.g., `feat(auth): handle expired tokens`).
+> Note: If you manually write a bad commit message, the `commitlint` hook will reject it.
+
+### 3. Auto-Formatting (lint-staged)
+When you commit, a pre-commit hook automatically runs **Prettier** (`lint-staged`) on all modified files. You never have to worry about formatting issues breaking the CI.
+
+### 4. CI & Branch Protection
+Direct pushes to `main` and `develop` are **blocked**.
+- You must open a Pull Request.
+- A GitHub Actions CI workflow will automatically run (`npm run lint`, `npm run build`, `npm run test`).
+- The PR can only be merged if the CI checks pass and there is at least 1 approval.
