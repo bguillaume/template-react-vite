@@ -21,9 +21,10 @@ jobs:
             npm install -g pnpm
             pnpm install
           elif [ -f yarn.lock ]; then
+            corepack enable
             yarn install --frozen-lockfile
           else
-            npm ci || npm install
+            npm ci
           fi
       - name: Lint
         run: npm run lint --if-present
