@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ShipFast-Syndicate_REPLACE_ME&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ShipFast-Syndicate_REPLACE_ME) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ShipFast-Syndicate_REPLACE_ME&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ShipFast-Syndicate_REPLACE_ME)
+
 # React + Vite Multi-Deploy Template
 
 A React 18 + Vite + Tailwind CSS template configured to deploy to Vercel or Cloudflare Pages. Avoid vendor lock-in by supporting multiple deployment platforms with a single codebase.
