@@ -3,7 +3,13 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+    branches: [main, develop]
     types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   sonarcloud:
     name: SonarCloud
