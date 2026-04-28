@@ -3,15 +3,15 @@ on:
   push:
     branches: [main, develop]
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
+      - "**.md"
+      - "docs/**"
+      - ".github/ISSUE_TEMPLATE/**"
   pull_request:
     branches: [main, develop]
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
+      - "**.md"
+      - "docs/**"
+      - ".github/ISSUE_TEMPLATE/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
