@@ -1,0 +1,34 @@
+title = "ShipFast-Syndicate gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Repo-wide allowlist for known false positives"
+paths = [
+  '''(^|/)\.vercel/''',
+  '''(^|/)\.next/''',
+  '''(^|/)\.svelte-kit/''',
+  '''(^|/)\.wrangler/''',
+  '''(^|/)\.astro/''',
+  '''(^|/)dist/''',
+  '''(^|/)build/''',
+  '''(^|/)coverage/''',
+  '''(^|/)node_modules/''',
+  '''(^|/)pnpm-lock\.yaml$''',
+  '''(^|/)package-lock\.json$''',
+  '''(^|/)yarn\.lock$''',
+  '''(^|/)\.env\.example$''',
+]
+regexes = [
+  # GitHub Actions secret references — placeholders, not literals
+  '''\$\{\{\s*secrets\.[A-Z0-9_]+\s*\}\}''',
+  # Test-generated PEMs (crypto.subtle.generateKey then exportKey)
+  '''-----BEGIN (?:RSA )?PRIVATE KEY-----\\n'\s*\+\s*b64\s*\+\s*'\\n-----END''',
+]
+stopwords = [
+  "example",
+  "placeholder",
+  "your-",
+  "REDACTED",
+]

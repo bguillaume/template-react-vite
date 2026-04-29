@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky install || true",
+    "prepare": "husky install && node scripts/install-gitleaks.cjs",
     "commit": "cz",
     "lint": "prettier --check .",
     "test": "vitest",

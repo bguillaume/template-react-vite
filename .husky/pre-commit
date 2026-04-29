@@ -28,3 +28,13 @@ if [ "$local_branch" != "HEAD" ]; then
       ;;
   esac
 fi
+
+# Run lint-staged and fail the commit if it cannot be executed
+if ! npx --no-install lint-staged; then
+  echo "❌ Error: Failed to run lint-staged. Ensure dependencies are installed and try again."
+  exit 1
+fi
+
+
+# Gitleaks — auto-installed via scripts/install-gitleaks.cjs (skipped in CI)
+pnpm exec gitleaks protect --staged --redact --no-banner --config .gitleaks.toml
