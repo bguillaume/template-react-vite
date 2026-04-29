@@ -1,0 +1,59 @@
+name: pr-base-check
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  check-base:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR base/head combination
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+        run: |
+          echo "PR #$PR_NUM: $HEAD -> $BASE"
+          case "$BASE" in
+            main)
+              case "$HEAD" in
+                release/*|hotfix/*|develop)
+                  echo "::notice::$HEAD -> main is allowed under GitFlow."
+                  exit 0
+                  ;;
+                *)
+                  echo "::error::PR to main from  is not allowed under GitFlow."
+                  echo "::error::Only release/*, hotfix/*, and develop may target main."
+                  echo "::error::Retarget to develop: gh pr edit $PR_NUM --base develop"
+                  exit 1
+                  ;;
+              esac
+              ;;
+            develop)
+              case "$HEAD" in
+                feat/*|fix/*|chore/*|docs/*|refactor/*|test/*|ci/*|build/*|perf/*|style/*|task/*|hotfix/*|release/*|dependabot/*|renovate/*|analysis/*)
+                  echo "::notice::$HEAD -> develop follows the conventional branch policy."
+                  exit 0
+                  ;;
+                main)
+                  echo "::error::PR from main -> develop is wrong direction."
+                  echo "::error::Sync develop with main via git merge origin/main on develop branch instead."
+                  exit 1
+                  ;;
+                *)
+                  echo "::warning::Branch  does not match conventional prefixes"
+                  echo "::warning::(feat|fix|chore|docs|refactor|test|ci|build|perf|style|task|hotfix|release|dependabot|renovate|analysis)/*"
+                  echo "::warning::Allowed but please rename next time."
+                  exit 0
+                  ;;
+              esac
+              ;;
+            *)
+              echo "Not targeting main or develop; skipping."
+              exit 0
+              ;;
+          esac
