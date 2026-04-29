@@ -37,5 +37,7 @@ jobs:
           restore-keys: node-modules-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Check for duplicate packages
+        run: pnpm dedupe --check
       - name: Run tests
         run: pnpm test:run

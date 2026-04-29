@@ -29,6 +29,16 @@ if [ "$local_branch" != "HEAD" ]; then
   esac
 fi
 
+# Refuse if package.json deps changed without pnpm-lock.yaml staged
+if git diff --cached --name-only | grep -qE '^package\.json$'; then
+  if git diff --cached package.json | grep -qE '^[+-][[:space:]]+"[^"]+"[[:space:]]*:[[:space:]]*"[~^]?[0-9*]'; then
+    if ! git diff --cached --name-only | grep -qE '^pnpm-lock\.yaml$'; then
+      echo '❌ Error: package.json deps changed without pnpm-lock.yaml -- run pnpm install and stage both.'
+      exit 1
+    fi
+  fi
+fi
+
 # Run lint-staged and fail the commit if it cannot be executed
 if ! npx --no-install lint-staged; then
   echo "❌ Error: Failed to run lint-staged. Ensure dependencies are installed and try again."
