@@ -1,0 +1,31 @@
+name: E2E Tests
+on:
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # NOTE: Add your own Playwright setup step here (e.g. pnpm exec playwright install --with-deps chromium)
+      # - name: Install Playwright browsers
+      #   run: pnpm exec playwright install --with-deps chromium
+      # - name: Run E2E tests
+      #   run: pnpm test:e2e
