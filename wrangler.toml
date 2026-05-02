@@ -1,6 +1,19 @@
 name = "template-react-vite"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-09-23"
+
+# === Cloudflare Pages config (CLI-based deploys via `wrangler pages deploy`) ===
+pages_build_output_dir = "./dist"
 pages_build = { bundle = true }
+
+# === Cloudflare Workers config (Workers Builds via `wrangler deploy`) ===
+# This is a Vite SPA — pure static assets, no Worker code. Uses the "assets-only
+# Worker" pattern (no `main` needed; wrangler 4+ serves directly).
+# `not_found_handling = "single-page-application"` rewrites unknown routes to
+# index.html so client-side React Router takes over.
+
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
 
 [vars]
 ENVIRONMENT = "production"
