@@ -1,0 +1,13 @@
+name: Dependabot Auto-Dedupe
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  dedupe:
+    uses: ShipFast-Syndicate/.github/.github/workflows/reusable-dependabot-dedupe.yml@v0.1.4
