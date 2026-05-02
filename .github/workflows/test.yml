@@ -4,17 +4,17 @@ on:
   push:
     branches: [main, develop]
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - 'LICENSE'
+      - "**.md"
+      - "docs/**"
+      - ".github/ISSUE_TEMPLATE/**"
+      - "LICENSE"
   pull_request:
     branches: [main, develop]
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - 'LICENSE'
+      - "**.md"
+      - "docs/**"
+      - ".github/ISSUE_TEMPLATE/**"
+      - "LICENSE"
   workflow_dispatch:
 
 concurrency:
@@ -25,7 +25,7 @@ jobs:
   test:
     uses: ShipFast-Syndicate/.github/.github/workflows/reusable-test.yml@v0.1.2
     with:
-      test-command: 'pnpm test:run'
+      test-command: "pnpm test:run"
 
   build:
     uses: ShipFast-Syndicate/.github/.github/workflows/reusable-build.yml@v0.1.2
